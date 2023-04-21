@@ -1,10 +1,10 @@
 const express = require("express");
-const items = require("../controllers/item.controller");
+const admins = require("../controllers/admin.controller");
 
 const router = express.Router();
 
+
 router.route("/")
-    .get(items.findAll)
-    .post(items.create);
+    .get(admins.findAll);
 
 module.exports = router;

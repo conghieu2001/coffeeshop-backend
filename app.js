@@ -1,6 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-const itemsRouter = require("./app/routes/contact.route");
+const itemsRouter = require("./app/routes/item.route");
+const adminsRouter = require("./app/routes/admin.route");
+const postRouter = require("./app/routes/post.route");
+const tuyendungRouter = require("./app/routes/tuyendung.route");
+const storeRouter = require("./app/routes/store.route");
+const userRouter = require("./app/routes/user.route");
 const ApiError = require("./app/api-error");
 
 const app = express();
@@ -9,6 +14,11 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/items", itemsRouter);
+app.use("/admin", adminsRouter);
+app.use("/posts", postRouter);
+app.use("/tuyendung", tuyendungRouter);
+app.use("/cuahang", storeRouter);
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
     res.json({message: "Welcome to coffee shop applicaton"});
