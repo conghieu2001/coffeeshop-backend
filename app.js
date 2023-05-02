@@ -6,6 +6,8 @@ const postRouter = require("./app/routes/post.route");
 const tuyendungRouter = require("./app/routes/tuyendung.route");
 const storeRouter = require("./app/routes/store.route");
 const userRouter = require("./app/routes/user.route");
+const payRouter = require("./app/routes/pay.route");
+const cmtRouter = require("./app/routes/cmt.route");
 const ApiError = require("./app/api-error");
 
 const app = express();
@@ -19,6 +21,8 @@ app.use("/posts", postRouter);
 app.use("/tuyendung", tuyendungRouter);
 app.use("/cuahang", storeRouter);
 app.use("/user", userRouter);
+app.use("/pay", payRouter);
+app.use("/cmt", cmtRouter);
 
 app.get("/", (req, res) => {
     res.json({message: "Welcome to coffee shop applicaton"});

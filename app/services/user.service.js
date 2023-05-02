@@ -1,17 +1,21 @@
 const { ObjectId } = require("mongodb");
+const bcrypt = require('bcryptjs');
 class UserService {
   constructor(client) {
     this.user = client.db().collection("users");
   }
 
   extractUserData(payload) {
+    const password_hash = bcrypt.hashSync(payload.password,8)
     const user = {
       name: payload.name,
       sdt: payload.sdt,
       email: payload.email,
       gioitinh: payload.gioitinh,
       ngaysinh: payload.ngaysinh,
-      password: payload.password,
+      password: password_hash,
+      image: 'https://taytou.com/wp-content/uploads/2022/08/Hinh-anh-Avatar-trang-tron-nen-xam-don-gian.png',
+      quyen: 1,
     };
     Object.keys(user).forEach(
       (key) => user[key] === undefined && delete user[key]
@@ -22,11 +26,13 @@ class UserService {
 
   async create(payload) {
     const user = this.extractUserData(payload);
+    console.log(123)
     const result = await this.user.findOneAndUpdate(
       user,
       { $set: { } },
       { returnDocument: "after", upsert: true }
-    );
+      );
+      console.log(result)
     return result.value;
   }
   async find(filter) {
@@ -38,11 +44,13 @@ class UserService {
       name: { $regex: new RegExp(name), $options: "i" },
     });
   }
-  async findbyemail(email) {
-    return await this.find({
-      email: { $regex: new RegExp(email), $options: "i" },
+  async findByEmail(email) {
+    const userEmail= await this.user.findOne({
+        email: email,
     });
-  }
+    // console.log(userEmail);
+    return userEmail;
+}
   async findById(id) {
     return await this.user.findOne({
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
@@ -52,10 +60,12 @@ class UserService {
     const filter = {
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
     };
-    const update = this.extractUserData(payload);
+    delete payload._id;
+    // console.log(filter)
+    // console.log(payload)
     const result = await this.user.findOneAndUpdate(
       filter,
-      { $set: update },
+      { $set: payload },
       { returnDocument: "after" }
     );
     return result.value;

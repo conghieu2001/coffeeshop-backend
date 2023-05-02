@@ -13,6 +13,7 @@ class ItemService {
       bestsale: payload.bestsale,
       quantity: payload.quantity,
       deleted: payload.deleted,
+      loaiItem: payload.loaiItem,
     };
     Object.keys(item).forEach(
       (key) => item[key] === undefined && delete item[key]
@@ -43,14 +44,23 @@ class ItemService {
     return await cursor.toArray();
   }
   async findByName(name) {
-    return await this.find({
+    console.log(name)
+    return await this.Item.find({
       name: { $regex: new RegExp(name), $options: "i" },
-    });
+    }).toArray();
+  }
+  async findByLoai(loai) {
+    // console.log(loai);
+    return await this.Item.find({
+      loaiItem: loai,
+    }).toArray();
   }
   async findById(id) {
-    return await this.Item.findOne({
+    const at = await this.Item.findOne({
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
     });
+    // console.log(at)
+    return at;
   }
   async update(id, payload) {
     const filter = {
@@ -64,18 +74,6 @@ class ItemService {
     );
     return result.value;
   }
-  // async delete(id) {
-  //   const filter = {
-  //     _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
-  //   };
-  //   const deletee = this.extractItemData(payload);
-  //   const result = await this.Item.findOneAndUpdate(
-  //     filter,
-  //     { $set: {deleted: deletee.deleted === true} },
-  //     { returnDocument: "after" }
-  //   );
-  //   return result.value;
-  // }
   async delete(id) {
     const result = await this.Item.findOneAndDelete({
       _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
@@ -93,6 +91,18 @@ class ItemService {
       { returnDocument: "after" }
     );
     return result.value;
+  }
+  async findByCoffee(filter) {
+    const cursor = await this.Item.find({"loaiItem": "coffee"});
+    return await cursor.toArray();
+  }
+  async findByHiTea(filter) {
+    const cursor = await this.Item.find({"loaiItem": "hitea"});
+    return await cursor.toArray();
+  }
+  async findBytea(filter) {
+    const cursor = await this.Item.find({"loaiItem": "tea"});
+    return await cursor.toArray();
   }
 }
 module.exports = ItemService;

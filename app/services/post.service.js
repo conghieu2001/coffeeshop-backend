@@ -10,7 +10,7 @@ class PostService {
       date: payload.date,
       image: payload.image,
       description: payload.description,
-      banner: payload.banner,
+      loai: payload.loai,
     };
     Object.keys(post).forEach(
       (key) => post[key] === undefined && delete post[key]
@@ -22,7 +22,7 @@ class PostService {
     const post = this.extractPostData(payload);
     const result = await this.Post.findOneAndUpdate(
       post,
-      { $set: { banner: post.banner === true } },
+      { $set: { } },
       { returnDocument: "after", upsert: true }
     );
     return result.value;
