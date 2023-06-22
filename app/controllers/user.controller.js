@@ -28,7 +28,7 @@ exports.findAll = async (req, res, next) => {
         if(name) {
             documents = await userService.findByName(name);
         } else {
-            documents = await userService.find({});
+            documents = await userService.findAllUser({});
         }
     } catch (error) {
         return next(
@@ -179,3 +179,31 @@ exports.deleteAll = async (_req, res, next) => {
         );
     }
 }; 
+exports.updateQuyen = async (req, res, next) => {
+    try {
+      const userService = new UserService(MongoDB.client);
+      const document = await userService.updateQuyen(req.params.id);
+      if (!document) {
+        return next(new ApiError(404, "Order not found"));
+      }
+      return res.send({ message: "Quyền: 2" });
+    } catch (error) {
+      return next(
+        new ApiError(500, `Error updating item with id=${req.params.id}`)
+      );
+    }
+  };
+  exports.backQuyen = async (req, res, next) => {
+    try {
+      const userService = new UserService(MongoDB.client);
+      const document = await userService.backQuyen(req.params.id);
+      if (!document) {
+        return next(new ApiError(404, "Order not found"));
+      }
+      return res.send({ message: "Quyền: 1" });
+    } catch (error) {
+      return next(
+        new ApiError(500, `Error updating item with id=${req.params.id}`)
+      );
+    }
+  };

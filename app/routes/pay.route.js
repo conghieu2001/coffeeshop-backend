@@ -3,20 +3,14 @@ const pays = require("../controllers/pay.controller");
 
 const router = express.Router();
 
-router.route("/")
-    .get(pays.findAll)
-    .post(pays.createOrder);
-router.route("/update/:id")
-    .put(pays.update);
-router.route("/backStatus/:id")
-    .put(pays.backStatus);
+router.route("/").get(pays.findAll).post(pays.createOrder);
+router.route("/update/:id").put(pays.update);
+router.route("/backStatus/:id").put(pays.backStatus);
+router.route("/confirmpay/:id").put(pays.confirmPay);
 
-router.route("/:email")
-    .get(pays.findOrderByEmail);
+router.route("/:email").get(pays.findOrderByEmail);
 
-router.route("/cancleOrder")
-    .post(pays.cancleOrder);
+router.route("/cancleOrder").post(pays.cancleOrder);
 
-router.route("/doanhthu/thang")
-    .get(pays.doanhthu);
+router.route("/doanhthu/thang").get(pays.doanhthu).post(pays.getDoanhThu);
 module.exports = router;

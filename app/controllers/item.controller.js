@@ -207,3 +207,31 @@ exports.findName = async (req, res, next) => {
     }
     return res.send(documents);
 };
+exports.findFavorite = async (req, res, next) => {
+    try {
+        const itemService = new ItemService(MongoDB.client);
+        const documents = await itemService.findFavorite();
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while bestsaling items")
+        );
+    }
+    return res.send(documents);
+};
+exports.updateFavorite = async (req, res, next) => {
+    // if(Object.keys(req.body).length === 0) {
+    //     return next(new ApiError(400, "Data to update can not be empty"));
+    // }
+    // console.log(req.params.id)
+    try{
+        const itemService = new ItemService(MongoDB.client);
+        const document = await itemService.updateFavorite(req.params.id);
+        if(!document) {
+            return next(new ApiError(404, "Item not found"));
+        }
+        return res.send({message: "Item was updated successfully"});
+    } catch(error) {
+        return next(new ApiError(500, `Error updating item with id=${req.params.id}`));
+    }
+};

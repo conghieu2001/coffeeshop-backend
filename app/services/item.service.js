@@ -14,6 +14,7 @@ class ItemService {
       quantity: payload.quantity,
       deleted: payload.deleted,
       loaiItem: payload.loaiItem,
+      favorite: payload.favorite,
     };
     Object.keys(item).forEach(
       (key) => item[key] === undefined && delete item[key]
@@ -25,7 +26,7 @@ class ItemService {
     const item = this.extractItemData(payload);
     const result = await this.Item.findOneAndUpdate(
       item,
-      { $set: { deleted: item.deleted === true, bestsale: item.bestsale === true } },
+      { $set: { deleted: item.deleted === true, bestsale: item.bestsale === true, favorite: item.favorite === true} },
       { returnDocument: "after", upsert: true }
     );
     return result.value;
@@ -41,6 +42,10 @@ class ItemService {
   }
   async findBestsale(filter ) {
     const cursor = await this.Item.find({"bestsale": true});
+    return await cursor.toArray();
+  }
+  async findFavorite(filter ) {
+    const cursor = await this.Item.find({"favorite": true});
     return await cursor.toArray();
   }
   async findByName(name) {
@@ -73,6 +78,34 @@ class ItemService {
       { returnDocument: "after" }
     );
     return result.value;
+  }
+  async updateFavorite(id) {
+    const filter = {
+      _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+    };
+    // const update = this.extractItemData(payload);
+    // console.log(filter, '123')
+    const at = await this.Item.findOne({
+        _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+      });
+      // console.log(at.favorite)
+      const isFavorite = at.favorite;
+    const result = await this.Item.findOneAndUpdate(
+      filter,
+      { $set: {favorite: !isFavorite} },
+      { returnDocument: "after" }
+    );
+    return result.value;
+    // const at = await this.Item.findOne({
+    //   _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
+    // });
+    // console.log(at)
+    // const result = await this.Item.updateOne(
+    //     at._id,
+    //     { $set: {favorite: true} },
+    //     { returnDocument: "after" }
+    //   );
+    //   return result.value;
   }
   async delete(id) {
     const result = await this.Item.findOneAndDelete({

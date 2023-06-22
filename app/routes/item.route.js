@@ -30,6 +30,8 @@ router.route("/loai/coffee").get(items.findAllCoffee);
 router.route("/loai/hitea").get(items.findAllHiTea);
 router.route("/loai/tea").get(items.findAllTea);
 router.route("/find/byname/:name").get(items.findName);
+router.route("/favorite").get(items.findFavorite);
+router.route("/favorite/aaaaa/:id").put(items.updateFavorite);
 
 
 module.exports = router;

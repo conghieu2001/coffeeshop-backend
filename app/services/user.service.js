@@ -9,10 +9,11 @@ class UserService {
     const password_hash = bcrypt.hashSync(payload.password,8)
     const user = {
       name: payload.name,
-      sdt: payload.sdt,
+      // sdt: payload.sdt,
       email: payload.email,
-      gioitinh: payload.gioitinh,
-      ngaysinh: payload.ngaysinh,
+      // gioitinh: payload.gioitinh,
+      // ngaysinh: payload.ngaysinh,
+      // image: payload.picture,
       password: password_hash,
       image: 'https://taytou.com/wp-content/uploads/2022/08/Hinh-anh-Avatar-trang-tron-nen-xam-don-gian.png',
       quyen: 1,
@@ -37,6 +38,10 @@ class UserService {
   }
   async find(filter) {
     const cursor = await this.user.find(filter);
+    return await cursor.toArray();
+  }
+  async findAllUser() {
+    const cursor = await this.user.find({quyen: {$gte: 1}});
     return await cursor.toArray();
   }
   async findbyname(name) {
@@ -79,6 +84,37 @@ class UserService {
   async deleteAll() {
     const result = await this.user.deleteMany({});
     return result.deletedCount;
+  }
+
+  async updateQuyen(idus) {
+    const filter = {
+      _id: ObjectId.isValid(idus) ? new ObjectId(idus) : null,
+    };
+    // const update = this.extractItemData(payload);
+    const result = await this.user.findOneAndUpdate(
+      filter,
+      { $set: { quyen: 2 } },
+      { returnDocument: "after" }
+    );
+    return result.value;
+  }
+  async backQuyen(idus) {
+    const filter = {
+      _id: ObjectId.isValid(idus) ? new ObjectId(idus) : null,
+    };
+    // const update = this.extractItemData(userload);
+    const result = await this.user.findOneAndUpdate(
+      filter,
+      { $set: { quyen: 1 } },
+      { returnDocument: "after" }
+    );
+    return result.value;
+  }
+  async findAllOrder() {
+    const cursor = await this.pay.find({
+      trangthai: "Dang giao hang"
+    });
+    return await cursor.toArray();
   }
 }
 module.exports = UserService;

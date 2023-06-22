@@ -18,6 +18,7 @@ class PayService {
       thoigian: time,
       trangthai: "Cho xac nhan",
       TongTien: payload.TongTien,
+      KhuyenMai: payload.KhuyenMai,
     };
     // Object.keys(pay).forEach(
     //   (key) => pay[key] === undefined && delete pay[key]
@@ -39,8 +40,8 @@ class PayService {
     });
     return await arrayOrder.toArray();
   }
-  async find(filter) {
-    const cursor = await this.pay.find(filter);
+  async find() {
+    const cursor = await this.pay.find({trangthai: "Da thanh toan"});
     return await cursor.toArray();
   }
 
@@ -63,6 +64,18 @@ class PayService {
     );
     return result.value;
   }
+  async confirmPay(idhd) {
+    const filter = {
+      _id: ObjectId.isValid(idhd) ? new ObjectId(idhd) : null,
+    };
+    // const update = this.extractItemData(payload);
+    const result = await this.pay.findOneAndUpdate(
+      filter,
+      { $set: { trangthai: "Da thanh toan" } },
+      { returnDocument: "after" }
+    );
+    return result.value;
+  }
   async deleteOrdered(idhd) {
     const result = await this.pay.findOneAndDelete({
       _id: ObjectId.isValid(idhd) ? new ObjectId(idhd) : null,
@@ -80,6 +93,12 @@ class PayService {
       { returnDocument: "after" }
     );
     return result.value;
+  }
+  async findAllOrder() {
+    const cursor = await this.pay.find({
+      trangthai: "Da thanh toan"
+    });
+    return await cursor.toArray();
   }
 }
 module.exports = PayService;
