@@ -55,7 +55,7 @@ exports.findAll = async (req, res, next) => {
 //     return res.send(documents);
 // };
 exports.loginAccount = async (req, res, next) => {
-
+    // console.log(req.session.auth, 'null')
     if (req.body.email) {
         try {
             const userService = new UserService(MongoDB.client);
@@ -65,7 +65,7 @@ exports.loginAccount = async (req, res, next) => {
             if (user) {
 
                 const resultPW = bcrypt.compareSync(req.body.password, user.password);
-                console.log(req.body.password)
+                // console.log(req.body.password)
                 if(resultPW){
                     delete user.password;
                     return res.send(
@@ -90,7 +90,8 @@ exports.loginAccount = async (req, res, next) => {
                 new ApiError(500, "An error occurred while login account")
             );
         }
-    } else {
+    }
+    else {
         return res.send(
             { user: null, message: 'Khong co tai khoan giong email' }
         )
@@ -207,3 +208,7 @@ exports.updateQuyen = async (req, res, next) => {
       );
     }
   };
+  exports.loginGoogle = async (req, res, next) => {
+    console.log(req.session?.auth, "conghieu")
+    res.json(req.session?.auth)
+  }

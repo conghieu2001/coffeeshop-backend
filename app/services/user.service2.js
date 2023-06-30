@@ -27,13 +27,13 @@ class UserService {
 
   async create(payload) {
     const user = this.extractUserData(payload);
-    console.log(123)
+    // console.log(123)
     const result = await this.user.findOneAndUpdate(
       user,
       { $set: { } },
       { returnDocument: "after", upsert: true }
       );
-      console.log(result)
+      // console.log(result)
     return result.value;
   }
 }
