@@ -70,7 +70,7 @@ appB.get(
       ...req.user._json,
     };
     // console.log(req.user)
-    // console.log(req.session.auth)
+    console.log(req.session.auth)
     res.redirect("http://localhost:3001/");
     // return document;
   }

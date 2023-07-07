@@ -4,7 +4,7 @@ const users = require("../controllers/user.controller");
 const router = express.Router();
 
 router.route("/").get(users.findAll).post(users.create).delete(users.deleteAll);
-router.route("/logingoogle").get(users.loginGoogle);
+// router.route("/logingoogle").get(users.loginGoogle);
 router.route("/login").post(users.loginAccount);
 
 router.route("/:id").get(users.findOne).put(users.update).delete(users.delete);

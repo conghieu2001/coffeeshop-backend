@@ -10,12 +10,12 @@ const payRouter = require("./app/routes/pay.route");
 const cmtRouter = require("./app/routes/cmt.route");
 const promoRouter = require("./app/routes/promo.route");
 const ApiError = require("./app/api-error");
-const Login = require("./login");
+// const Login = require("./login");
 const app = express();
 
-// app.use(cors());
-app.use(cors({credentials: true, origin: 'http://localhost:3001'}))
-app.use(express.urlencoded({extended: true}));
+app.use(cors());
+// app.use(cors({credentials: true, origin: 'http://localhost:3001'}))
+// app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
 app.use("/api/items", itemsRouter);
@@ -27,10 +27,10 @@ app.use("/user", userRouter);
 app.use("/pay", payRouter);
 app.use("/cmt", cmtRouter);
 app.use("/promo", promoRouter);
-app.use("/", Login);
-// app.get("/", (req, res) => {
-//     res.json({message: "Welcome to coffee shop applicaton"});
-// });
+// app.use("/", Login);
+app.get("/", (req, res) => {
+    res.json({message: "Welcome to coffee shop applicaton"});
+});
 app.use((req, res, next) => {
     return next(new ApiError(404, "Resource not found"));
 });

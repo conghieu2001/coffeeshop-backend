@@ -208,7 +208,7 @@ exports.updateQuyen = async (req, res, next) => {
       );
     }
   };
-  exports.loginGoogle = async (req, res, next) => {
-    console.log(req.session?.auth, "conghieu")
-    res.json(req.session?.auth)
-  }
+//   exports.loginGoogle = async (req, res, next) => {
+//     console.log(req.session?.auth, "conghieu")
+//     res.json(req.session?.auth)
+//   }

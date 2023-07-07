@@ -1,5 +1,5 @@
 const PayService = require("../services/pay.service");
-const PromoService = require("../services/promo.service");
+// const PromoService = require("../services/promo.service");
 const ItemService = require("../services/item.service");
 const DetailOrderService = require("../services/detailOrder.service");
 const MongoDB = require("../utils/mongodb.util");
@@ -12,15 +12,16 @@ exports.createOrder = async (req, res, next) => {
     // let arrayItem = [];
 
     const payService = new PayService(MongoDB.client);
-    const promoService = new PromoService(MongoDB.client);
+    // const promoService = new PromoService(MongoDB.client);
     const detailOrderService = new DetailOrderService(MongoDB.client);
     const itemService = new ItemService(MongoDB.client);
 
     // const addPromotion = await promoService.find(req.body.name);
     const itemDetail = req.body.itemsCart;
     const document = await payService.create(req.body);
-    arraypay = await payService.find({});
+    arraypay = await payService.findUseCreate({});
     const id_detailOrder = arraypay[arraypay.length - 1]._id;
+    console.log(id_detailOrder, '123')
 
     for (let index = 0; index < itemDetail.length; index++) {
       const dataDetail = {
@@ -49,7 +50,7 @@ exports.findAll = async (req, res, next) => {
     const payService = new PayService(MongoDB.client);
 
     const detailOrderService = new DetailOrderService(MongoDB.client);
-    const orders = await await payService.find({});
+    const orders = await await payService.findUseCreate({});
     // console.log(orders.length)
     if (orders.length > 0) {
       for (let index = 0; index < orders.length; index++) {

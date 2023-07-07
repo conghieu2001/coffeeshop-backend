@@ -44,6 +44,10 @@ class PayService {
     const cursor = await this.pay.find({trangthai: "Da thanh toan"});
     return await cursor.toArray();
   }
+  async findUseCreate() {
+    const cursor = await this.pay.find({});
+    return await cursor.toArray();
+  }
 
   async findOrderById(idhd) {
     const arrayOrder = await this.pay.findOne({
